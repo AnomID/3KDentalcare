@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* TODO TEXT */
+
+.text-white1 {
+    color: antiquewhite;
+}
+
+.text-black1 {
+    color: #231f20;
+}
+
+.text-gold1 {
+    color: #ffd700;
+}
+
+/* TODO BACKGRROUND */
+
+.bg-black1 {
+    background-color: #231f20;
+}
+
+.bg-white1 {
+    background-color: #eaeaea;
+}
+
+.bg-gold {
+    background-color: #ad974f;
+}
+
+.bg-black-gradient {
+    background: linear-gradient(
+        90deg,
+        rgba(35, 31, 32, 0.9),
+        rgba(142, 121, 62, 0.9)
+    );
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 12px rgba(142, 121, 62, 0.3); /* Shadow emas di bawah navbar */
+    transition: all 0.3s ease-in-out;
+}
+
+.bg-gold1 {
+    background-color: #8e793e;
+}
+
+.bg-gold-gradient {
+    background: linear-gradient(90deg, #b8860b, #8e793e);
+}
+
+.border-gold {
+    border-color: #8e793e;
+}
+
+/* TODO HOVER */
+
+.hover\:bg-gold-gradient:hover {
+    background: linear-gradient(90deg, #b8860b, #8e793e);
+    color: #fff;
+    transition: all 0.3s ease-in-out;
+}
+
+.hover\:bg-gold-shadow:hover {
+    background-color: #8e793e;
+    color: #fff;
+    box-shadow: 0px 4px 15px rgba(255, 215, 0, 0.5);
+    transform: scale(1.05);
+    transition: all 0.3s ease-in-out;
+}
+
+.hover\:text-white:hover {
+    color: #ffffff;
+}
