@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import Button from "./Button";
 
 const images = [
     "/images/drg.bawa.png",
@@ -10,26 +11,30 @@ const images = [
 
 export default function HeroSection() {
     return (
-        <div className="relative bg-white1 py-2 lg:py-2 overflow-hidden">
+        <div className="relative py-10 lg:py-16 overflow-hidden bg-gradient-to-b from-[#1D1912] to-[#BB8525]">
             <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 {/* Judul */}
-                <div className="sm:max-w-lg text-center mx-auto">
-                    <h1 className="text-4xl font-bold tracking-tight text-black1 sm:text-6xl">
-                        Meet with our Doctors
+                <motion.div
+                    initial={{ opacity: 0, y: -30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    viewport={{ once: false, amount: 0.3 }}
+                    className="sm:max-w-lg text-center mx-auto"
+                >
+                    <h1 className="text-4xl font-bold tracking-tight text-[#F3F3E6] sm:text-6xl">
+                        Dokter Gigi Kami Yang Profesional
                     </h1>
-                    <p className="mt-4 text-lg text-black1">
+                    <p className="mt-4 text-lg text-[#EECD5C]">
                         Temui dokter profesional kami yang siap memberikan
                         layanan terbaik untuk Anda.
                     </p>
-                </div>
+                </motion.div>
 
                 {/* Carousel */}
-                <div className="mt-12 lg:mt-16 overflow-hidden">
+                <div className="mt-12 lg:mt-16 overflow-hidden relative">
                     <motion.div
                         className="flex space-x-6 lg:space-x-8"
-                        animate={{
-                            x: ["0%", "-100%"],
-                        }}
+                        animate={{ x: ["0%", "-100%"] }}
                         transition={{
                             repeat: Infinity,
                             duration: 15,
@@ -37,8 +42,15 @@ export default function HeroSection() {
                         }}
                     >
                         {[...images, ...images].map((src, index) => (
-                            <div
+                            <motion.div
                                 key={index}
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                transition={{
+                                    duration: 0.6,
+                                    delay: index * 0.1,
+                                }}
+                                viewport={{ once: false, amount: 0.3 }}
                                 className="w-40 sm:w-52 md:w-60 lg:w-72 h-56 sm:h-64 md:h-72 lg:h-80 rounded-lg shadow-lg overflow-hidden flex-shrink-0 bg-transparent"
                             >
                                 <img
@@ -46,19 +58,26 @@ export default function HeroSection() {
                                     alt=""
                                     className="w-full h-full object-contain"
                                 />
-                            </div>
+                            </motion.div>
                         ))}
                     </motion.div>
                 </div>
 
-                <div className="mt-10 text-center">
-                    <a
-                        href="#"
-                        className="inline-block rounded-md border border-transparent bg-gold1 px-8 py-3 text-center font-medium text-white shadow-md hover:bg-gold2 transition"
-                    >
-                        Buat Janji Sekarang
-                    </a>
-                </div>
+                {/* Tombol Aksi */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    viewport={{ once: false, amount: 0.3 }}
+                    className="mt-10 text-center"
+                >
+                    <div className="flex flex-col items-left gap-2 mt-5 z-10">
+                        <Button size="md" href="/">
+                            {" "}
+                            Dokter Pilihan Kami{" "}
+                        </Button>
+                    </div>
+                </motion.div>
             </div>
         </div>
     );

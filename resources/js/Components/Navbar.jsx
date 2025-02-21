@@ -15,6 +15,14 @@ export default function Navbar() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    const handleScroll = (id) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+            setIsOpen(false);
+        }
+    };
+
     return (
         <nav
             className={`fixed top-0 left-0 w-full px-6 py-4 z-50 transition-all duration-300 ${
@@ -33,55 +41,69 @@ export default function Navbar() {
                     />
                 </Link>
 
-                {/* Menu Desktop */}
+                {/* Desktop Menu */}
                 <div className="hidden md:flex gap-6">
                     {[
-                        "Home",
-                        "Tentang Klinik",
-                        "Layanan",
-                        "Berita",
-                        "Kontak",
+                        { name: "Home", id: "home" },
+                        { name: "Tentang Klinik", id: "tentang" },
+                        { name: "Layanan", id: "layanan" },
+                        { name: "Berita", id: "berita" },
+                        { name: "Kontak", id: "kontak" },
                     ].map((item, index) => (
-                        <Link
+                        <button
                             key={index}
-                            href={`/${item.toLowerCase().replace(/\s/g, "")}`}
-                            className="relative group transition duration-300 text-white1 hover:text-gold1"
+                            onClick={() => handleScroll(item.id)}
+                            className="relative group transition duration-300 text-white hover:text-gold"
                         >
-                            {item}
+                            {item.name}
                             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gold transition-all duration-300 group-hover:w-full"></span>
-                        </Link>
+                        </button>
                     ))}
                 </div>
 
-                {/* Toggle Menu Mobile */}
+                {/* Mobile Menu Button */}
                 <button
-                    className="md:hidden text-white1 focus:outline-none"
+                    className="md:hidden text-white focus:outline-none"
                     onClick={() => setIsOpen(!isOpen)}
                 >
-                    {isOpen ? <X size={28} /> : <Menu size={28} />}
+                    <div className="relative w-8 h-8 flex items-center justify-center">
+                        {isOpen ? (
+                            <X
+                                size={32}
+                                className="text-gold transition-transform transform rotate-90"
+                            />
+                        ) : (
+                            <Menu
+                                size={32}
+                                className="text-white transition-transform transform scale-105"
+                            />
+                        )}
+                    </div>
                 </button>
             </div>
 
-            {/* Menu Mobile */}
-            {isOpen && (
-                <div className="md:hidden bg-black1 py-4 absolute top-16 left-0 w-full shadow-lg">
-                    {[
-                        "Home",
-                        "Tentang Klinik",
-                        "Layanan",
-                        "Berita",
-                        "Kontak",
-                    ].map((item, index) => (
-                        <Link
-                            key={index}
-                            href={`/${item.toLowerCase().replace(/\s/g, "")}`}
-                            className="block py-2 px-6 text-white1 hover:text-gold1 hover:bg-gray-800 transition duration-300"
-                        >
-                            {item}
-                        </Link>
-                    ))}
-                </div>
-            )}
+            {/* Mobile Menu */}
+            <div
+                className={`fixed top-0 left-0 w-full h-screen bg-black bg-opacity-80 backdrop-blur-lg transform transition-transform duration-300 ${
+                    isOpen ? "translate-x-0" : "-translate-x-full"
+                } flex flex-col items-center justify-center space-y-6 text-white text-xl`}
+            >
+                {[
+                    { name: "Home", id: "home" },
+                    { name: "Tentang Klinik", id: "tentang" },
+                    { name: "Layanan", id: "layanan" },
+                    { name: "Berita", id: "berita" },
+                    { name: "Kontak", id: "kontak" },
+                ].map((item, index) => (
+                    <button
+                        key={index}
+                        onClick={() => handleScroll(item.id)}
+                        className="py-2 px-6 hover:text-gold transition duration-300"
+                    >
+                        {item.name}
+                    </button>
+                ))}
+            </div>
         </nav>
     );
 }

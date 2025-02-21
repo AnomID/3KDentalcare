@@ -41,7 +41,13 @@ export default function Footer() {
         >
             {/* Efek Glassmorphism */}
             <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="bg-white/10 backdrop-blur-lg shadow-lg rounded-lg p-6">
+                <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                    viewport={{ once: true }}
+                    className="bg-white/10 backdrop-blur-lg shadow-lg rounded-lg p-6"
+                >
                     <h3 className="text-xl font-bold text-gold2">
                         3K Dental Care
                     </h3>
@@ -59,10 +65,16 @@ export default function Footer() {
                             812-3456-7890
                         </p>
                     </div>
-                </div>
+                </motion.div>
 
                 {/* Navigasi */}
-                <div className="bg-white/10 backdrop-blur-lg shadow-lg rounded-lg p-6">
+                <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
+                    viewport={{ once: true }}
+                    className="bg-white/10 backdrop-blur-lg shadow-lg rounded-lg p-6"
+                >
                     <h3 className="text-xl font-bold text-gold2">Navigasi</h3>
                     <ul className="mt-2 space-y-2">
                         {[
@@ -84,10 +96,16 @@ export default function Footer() {
                             </li>
                         ))}
                     </ul>
-                </div>
+                </motion.div>
 
                 {/* Media Sosial & Lokasi */}
-                <div className="bg-white/10 backdrop-blur-lg shadow-lg rounded-lg p-6">
+                <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.6 }}
+                    viewport={{ once: true }}
+                    className="bg-white/10 backdrop-blur-lg shadow-lg rounded-lg p-6"
+                >
                     <h3 className="text-xl font-bold text-gold2">Ikuti Kami</h3>
                     <div className="flex gap-4 mt-4">
                         {[
@@ -104,18 +122,20 @@ export default function Footer() {
                                 link: "https://www.tiktok.com/@3kdcsemarang?is_from_webapp=1&sender_device=pc",
                             },
                         ].map((social, index) => (
-                            <a
+                            <motion.a
                                 key={index}
                                 href={social.link}
-                                target="_blank" // Membuka di tab baru
-                                rel="noopener noreferrer" // Keamanan tambahan
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className="p-3 bg-white/20 backdrop-blur-lg rounded-full transition duration-300 hover:bg-gold1 hover:scale-110 hover:rotate-6"
+                                whileHover={{ scale: 1.2, rotate: 10 }}
+                                transition={{ duration: 0.3 }}
                             >
                                 <social.icon
                                     size={24}
                                     className="text-white1"
                                 />
-                            </a>
+                            </motion.a>
                         ))}
                     </div>
 
@@ -134,24 +154,36 @@ export default function Footer() {
                     </Link>
 
                     {/* Embed Peta */}
-                    <div className="mt-4 overflow-hidden rounded-lg shadow-lg">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.6, delay: 0.8 }}
+                        viewport={{ once: true }}
+                        className="mt-4 overflow-hidden rounded-lg shadow-lg"
+                    >
                         <iframe
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.168587070438!2d110.42295887604597!3d-6.989414268451597!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e708bc9e64b992f%3A0xbc231184bd4376!2s3KDC%20Klinik%20Gigi%20Semarang!5e0!3m2!1sid!2sid!4v1740069974949!5m2!1sid!2sid"
                             width="100%"
                             height="180"
-                            allowfullscreen=""
+                            allowFullScreen=""
                             loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade"
+                            referrerPolicy="no-referrer-when-downgrade"
                         ></iframe>
-                    </div>
-                </div>
+                    </motion.div>
+                </motion.div>
             </div>
 
             {/* Hak Cipta */}
-            <div className="mt-10 text-center text-gray-400 text-sm">
+            <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 1 }}
+                viewport={{ once: true }}
+                className="mt-10 text-center text-gray-400 text-sm"
+            >
                 © {new Date().getFullYear()} 3K Dental Care. Semua Hak
                 Dilindungi.
-            </div>
+            </motion.div>
         </motion.footer>
     );
 }

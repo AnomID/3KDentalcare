@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { Link } from "@inertiajs/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import Button from "./Button";
 
 const services = [
     {
@@ -21,15 +22,15 @@ const services = [
     },
     {
         title: "3KDC Perawatan Gigi Anak",
-        description: "Pemasangan behel untuk merapikan gigi.",
+        description: "Perawatan khusus untuk anak-anak agar gigi tetap sehat.",
         img: "/images/s.dental-child.jpg",
-        link: "/layanan/perawatan-ortodonti",
+        link: "/layanan/perawatan-anak",
     },
     {
         title: "3KDC Konservasi Gigi",
-        description: "Pemasangan behel untuk merapikan gigi.",
+        description: "Perawatan untuk mempertahankan struktur asli gigi.",
         img: "/images/s.conservation.jpeg",
-        link: "/layanan/perawatan-ortodonti",
+        link: "/layanan/konservasi-gigi",
     },
     {
         title: "3KDC Orthodonti",
@@ -39,121 +40,63 @@ const services = [
     },
     {
         title: "3KDC Direct Veneer",
-        description: "Pemasangan behel untuk merapikan gigi.",
+        description: "Solusi veneer untuk gigi yang lebih indah.",
         img: "/images/s.veneer.jpg",
-        link: "/layanan/perawatan-ortodonti",
+        link: "/layanan/direct-veneer",
     },
 ];
 
 export default function DentalServices() {
-    const [isVisible, setIsVisible] = useState(false);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            const section = document.getElementById("dental-services");
-            if (section) {
-                const rect = section.getBoundingClientRect();
-                if (rect.top < window.innerHeight - 100) {
-                    setIsVisible(true);
-                }
-            }
-        };
-
-        window.addEventListener("scroll", handleScroll);
-        handleScroll();
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
-
     return (
-        <section id="dental-services" className="bg-[#eaeaea] py-10">
-            <div className="max-w-7xl mx-auto px-6 text-center">
-                {/* Judul Section */}
-                <h1 className="text-4xl font-bold tracking-tight text-black1 sm:text-6xl">
-                    Our Services
-                </h1>
-                <p className="mt-4 mb-10 text-lg text-black1">
-                    Klinik kami menyediakan layanan gigi terbaik untuk kesehatan
-                    dan estetika gigi Anda.
-                </p>
-
-                {/* Desktop Grid View */}
-                <div
-                    className={`hidden lg:grid grid-cols-3 gap-8 transition-opacity duration-1000 ${
-                        isVisible
-                            ? "opacity-100 translate-y-0"
-                            : "opacity-0 translate-y-10"
-                    }`}
-                >
-                    {services.map((service, index) => (
-                        <Link
-                            key={index}
-                            href={service.link}
-                            className="group relative overflow-hidden rounded-lg shadow-lg bg-white hover:shadow-xl transform transition duration-300 hover:scale-105"
+        <section id="dental-services" className="relative w-full py-0 mb-0">
+            {/* Swiper Slideshow */}
+            <Swiper
+                modules={[Autoplay, Pagination, Navigation]}
+                slidesPerView={1}
+                loop={true}
+                autoplay={{ delay: 3000 }}
+                pagination={{ clickable: true }}
+                className="w-full h-[500px] pb-24"
+            >
+                {services.map((service, index) => (
+                    <SwiperSlide key={index}>
+                        {/* Tambahkan animasi agar aktif setiap kali slide masuk viewport */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 50 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, ease: "easeOut" }}
+                            viewport={{ once: false, amount: 0.3 }} // Aktif setiap kali masuk viewport
+                            className="relative w-full h-[500px] flex items-center justify-center"
                         >
-                            <div className="relative w-full h-64">
-                                <img
-                                    src={service.img}
-                                    alt={service.title}
-                                    className="w-full h-full object-cover transition duration-300 group-hover:scale-110"
-                                />
-                                <div className="absolute inset-0 bg-black bg-opacity-30 group-hover:bg-opacity-40 transition duration-300"></div>
+                            {/* Background Image with Gradient Overlay */}
+                            <div
+                                className="absolute inset-0 bg-cover bg-center"
+                                style={{
+                                    backgroundImage: `url(${service.img})`,
+                                }}
+                            >
+                                <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/20"></div>
                             </div>
-                            <div className="p-6 text-center">
-                                <h3 className="text-xl font-semibold text-black1">
+
+                            {/* Text Content */}
+                            <div className="relative z-10 text-center px-6 max-w-3xl">
+                                <h2 className="text-4xl font-bold text-white">
                                     {service.title}
-                                </h3>
-                                <p className="text-gray-600 mt-2">
+                                </h2>
+                                <p className="text-lg text-gray-300 mt-3">
                                     {service.description}
                                 </p>
+                                <div className="flex flex-col items-left gap-2 mt-5 z-10">
+                                    <Button size="md" href="/">
+                                        {" "}
+                                        Informasi Lanjut{" "}
+                                    </Button>
+                                </div>
                             </div>
-                        </Link>
-                    ))}
-                </div>
-
-                {/* Mobile Carousel View */}
-                <div className="lg:hidden">
-                    <Swiper
-                        modules={[Navigation, Pagination, Autoplay]}
-                        spaceBetween={20}
-                        slidesPerView={1.2}
-                        centeredSlides={true}
-                        loop={true}
-                        autoplay={{ delay: 3000 }}
-                        pagination={{ clickable: true }}
-                        navigation={false}
-                        className="w-full"
-                    >
-                        {services.map((service, index) => (
-                            <SwiperSlide
-                                key={index}
-                                className="flex justify-center"
-                            >
-                                <Link
-                                    href={service.link}
-                                    className="group relative overflow-hidden rounded-lg shadow-lg bg-white hover:shadow-xl transform transition duration-300 hover:scale-105 w-80"
-                                >
-                                    <div className="relative w-full h-64">
-                                        <img
-                                            src={service.img}
-                                            alt={service.title}
-                                            className="w-full h-full object-cover transition duration-300 group-hover:scale-110"
-                                        />
-                                        <div className="absolute inset-0 bg-black bg-opacity-30 group-hover:bg-opacity-40 transition duration-300"></div>
-                                    </div>
-                                    <div className="p-6 text-center">
-                                        <h3 className="text-xl font-semibold text-black1">
-                                            {service.title}
-                                        </h3>
-                                        <p className="text-gray-600 mt-2">
-                                            {service.description}
-                                        </p>
-                                    </div>
-                                </Link>
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>
-                </div>
-            </div>
+                        </motion.div>
+                    </SwiperSlide>
+                ))}
+            </Swiper>
         </section>
     );
 }
