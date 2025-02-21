@@ -16,6 +16,10 @@
     color: #ffd700;
 }
 
+.text-gold2 {
+    color: #ad974f;
+}
+
 /* TODO BACKGRROUND */
 
 .bg-black1 {
@@ -72,4 +76,13 @@
 
 .hover\:text-white:hover {
     color: #ffffff;
+}
+
+/* TODO ETC */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
