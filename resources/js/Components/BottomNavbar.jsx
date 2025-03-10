@@ -6,22 +6,55 @@ import {
     Briefcase,
     Star,
     LayoutDashboard,
+    CalendarCheck,
+    ClipboardList,
+    CreditCard,
+    User,
 } from "lucide-react";
 
 export default function BottomNavbar() {
     const { auth } = usePage().props;
-
+    const user = auth.user;
+    const role = user ? user.role : "none";
     return (
         <div className="fixed bottom-0 left-0 w-full bg-black/70 backdrop-blur-md border-t border-[#BB8525] shadow-lg shadow-[#BB8525]/50 py-3 flex justify-around z-50">
-            <NavItem href="/" icon={Home} label="Home" />
-            <NavItem href="/doctors" icon={Users} label="Dokter" />
-            <NavItem
-                href={auth.user ? "/dashboard" : "/login"}
-                icon={auth.user ? LayoutDashboard : LogIn}
-                label={auth.user ? "Dashboard" : "Login"}
-            />
-            <NavItem href="/services" icon={Briefcase} label="Layanan" />
-            <NavItem href="/testimonial" icon={Star} label="Ulasan" />
+            {/* Navbar untuk Non-Login */}
+            {!user && (
+                <>
+                    <NavItem href="/" icon={Home} label="Home" />
+                    <NavItem href="/doctors" icon={Users} label="Dokter" />
+                    <NavItem href="/login" icon={LogIn} label="Login" />
+                    <NavItem
+                        href="/services"
+                        icon={Briefcase}
+                        label="Layanan"
+                    />
+                    <NavItem href="/testimonial" icon={Star} label="Ulasan" />
+                </>
+            )}
+
+            {/* Navbar untuk Pasien */}
+            {role === "pasien" && (
+                <>
+                    <NavItem href="/dashboard" icon={Home} label="Dashbiard" />
+                    <NavItem
+                        href="/appointments"
+                        icon={CalendarCheck}
+                        label="Janji Temu"
+                    />
+                    <NavItem
+                        href="/history"
+                        icon={ClipboardList}
+                        label="Riwayat"
+                    />
+                    <NavItem
+                        href="/billing"
+                        icon={CreditCard}
+                        label="Tagihan"
+                    />
+                    <NavItem href="/profile" icon={User} label="Profil" />
+                </>
+            )}
         </div>
     );
 }

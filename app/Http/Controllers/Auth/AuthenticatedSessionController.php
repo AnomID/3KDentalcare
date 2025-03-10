@@ -45,7 +45,16 @@ public function store(LoginRequest $request): RedirectResponse
     // Regenerasi session setelah login sukses
     $request->session()->regenerate();
 
-    return redirect()->intended(route('dashboard'));
+    // Dapatkan role pengguna
+    $user = Auth::user();
+
+    // Redirect berdasarkan role
+    return match ($user->role) {
+        'pasien' => redirect()->route('pasien.dashboard'),
+        'dokter' => redirect()->route('dokter.dashboard'),
+        'karyawan' => redirect()->route('karyawan.dashboard'),
+        default => redirect()->route('dashboard'),
+    };
 }
 
 
