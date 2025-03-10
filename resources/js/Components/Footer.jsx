@@ -1,28 +1,20 @@
 import { useEffect, useState } from "react";
 import { Link } from "@inertiajs/react";
-import { motion } from "framer-motion";
-import {
-    Facebook,
-    Instagram,
-    Twitter,
-    Mail,
-    Phone,
-    MapPin,
-    Youtube,
-} from "lucide-react";
+import { motion, useAnimation } from "framer-motion";
+import { Mail, Phone, MapPin, Youtube, Instagram } from "lucide-react";
 import TiktokIcon from "./TiktokIcon";
 
 export default function Footer() {
-    const [isVisible, setIsVisible] = useState(false);
+    const controls = useAnimation();
+    const [isInView, setIsInView] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
             const footer = document.getElementById("footer");
             if (footer) {
                 const rect = footer.getBoundingClientRect();
-                if (rect.top < window.innerHeight - 100) {
-                    setIsVisible(true);
-                }
+                const isVisible = rect.top < window.innerHeight - 100;
+                setIsInView(isVisible);
             }
         };
 
@@ -31,22 +23,45 @@ export default function Footer() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    useEffect(() => {
+        if (isInView) {
+            controls.start("visible");
+        } else {
+            controls.start("hidden");
+        }
+    }, [isInView, controls]);
+
+    const containerVariants = {
+        hidden: {},
+        visible: {
+            transition: {
+                staggerChildren: 0.3, // Jeda 0.3 detik antar elemen
+            },
+        },
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 50 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.8, ease: "easeOut" },
+        },
+    };
+
     return (
         <motion.footer
             id="footer"
             className="relative bg-gradient-to-r from-[#231f20] to-[#8e793e] py-12 text-white1"
-            initial={{ opacity: 0, y: 50 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            initial="hidden"
+            animate={controls}
+            variants={containerVariants}
         >
-            {/* Efek Glassmorphism */}
             <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+                {/* 3K Dental Care */}
                 <motion.div
-                    initial={{ opacity: 0, y: 50 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                    viewport={{ once: true }}
                     className="bg-white/10 backdrop-blur-lg shadow-lg rounded-lg p-6"
+                    variants={itemVariants}
                 >
                     <h3 className="text-xl font-bold text-gold2">
                         3K Dental Care
@@ -69,11 +84,8 @@ export default function Footer() {
 
                 {/* Navigasi */}
                 <motion.div
-                    initial={{ opacity: 0, y: 50 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
-                    viewport={{ once: true }}
                     className="bg-white/10 backdrop-blur-lg shadow-lg rounded-lg p-6"
+                    variants={itemVariants}
                 >
                     <h3 className="text-xl font-bold text-gold2">Navigasi</h3>
                     <ul className="mt-2 space-y-2">
@@ -100,11 +112,8 @@ export default function Footer() {
 
                 {/* Media Sosial & Lokasi */}
                 <motion.div
-                    initial={{ opacity: 0, y: 50 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.6 }}
-                    viewport={{ once: true }}
                     className="bg-white/10 backdrop-blur-lg shadow-lg rounded-lg p-6"
+                    variants={itemVariants}
                 >
                     <h3 className="text-xl font-bold text-gold2">Ikuti Kami</h3>
                     <div className="flex gap-4 mt-4">
@@ -122,20 +131,18 @@ export default function Footer() {
                                 link: "https://www.tiktok.com/@3kdcsemarang?is_from_webapp=1&sender_device=pc",
                             },
                         ].map((social, index) => (
-                            <motion.a
+                            <a
                                 key={index}
                                 href={social.link}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="p-3 bg-white/20 backdrop-blur-lg rounded-full transition duration-300 hover:bg-gold1 hover:scale-110 hover:rotate-6"
-                                whileHover={{ scale: 1.2, rotate: 10 }}
-                                transition={{ duration: 0.3 }}
                             >
                                 <social.icon
                                     size={24}
                                     className="text-white1"
                                 />
-                            </motion.a>
+                            </a>
                         ))}
                     </div>
 
@@ -154,13 +161,7 @@ export default function Footer() {
                     </Link>
 
                     {/* Embed Peta */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.6, delay: 0.8 }}
-                        viewport={{ once: true }}
-                        className="mt-4 overflow-hidden rounded-lg shadow-lg"
-                    >
+                    <div className="mt-4 overflow-hidden rounded-lg shadow-lg">
                         <iframe
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.168587070438!2d110.42295887604597!3d-6.989414268451597!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e708bc9e64b992f%3A0xbc231184bd4376!2s3KDC%20Klinik%20Gigi%20Semarang!5e0!3m2!1sid!2sid!4v1740069974949!5m2!1sid!2sid"
                             width="100%"
@@ -169,21 +170,15 @@ export default function Footer() {
                             loading="lazy"
                             referrerPolicy="no-referrer-when-downgrade"
                         ></iframe>
-                    </motion.div>
+                    </div>
                 </motion.div>
             </div>
 
             {/* Hak Cipta */}
-            <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 1 }}
-                viewport={{ once: true }}
-                className="mt-10 text-center text-gray-400 text-sm"
-            >
+            <div className="mt-10 text-center text-gray-400 text-sm">
                 © {new Date().getFullYear()} 3K Dental Care. Semua Hak
                 Dilindungi.
-            </motion.div>
+            </div>
         </motion.footer>
     );
 }

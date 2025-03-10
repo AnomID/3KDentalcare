@@ -5,11 +5,11 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
-import HeroSection from "@/Components/HeroSection";
-import DentalServices from "@/Components/DentalServices";
 import Footer from "@/Components/Footer";
-import TentangKlinik from "@/Components/TentangKlinik";
-import JoinNow from "@/Components/JoinNow";
+import AboutSection from "@/Components/AboutSection";
+import ServicesSection from "@/Components/ServicesSection";
+import DocterSection from "@/Components/DocterSection";
+import HeroSection from "@/Components/HeroSection";
 export default function Home() {
     const images = [
         "/images/banner1.png",
@@ -45,16 +45,19 @@ export default function Home() {
                 </div>
             </section>
             {/* Content  */}
+            <section id="hero">
+                <HeroSection />
+            </section>
             <section id="tentang">
-                <TentangKlinik />
+                <AboutSection />
             </section>
 
             <section id="layanan">
-                <DentalServices />
+                <ServicesSection />
             </section>
-
-            <HeroSection />
-            <JoinNow />
+            <section id="dokter">
+                <DocterSection />
+            </section>
 
             {/* Footer */}
             <section id="kontak">

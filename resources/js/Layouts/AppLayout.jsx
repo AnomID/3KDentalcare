@@ -29,17 +29,3 @@ export default function AppLayout({ children }) {
         </div>
     );
 }
-
-function NavItem({ href, icon: Icon, label, activeColor = "text-[#D2A63C]" }) {
-    return (
-        <Link
-            href={href}
-            className="flex flex-col items-center text-[#F3F3E6] hover:text-[#D2A63C] transition duration-300 group"
-        >
-            <div className="p-3 rounded-full bg-white/10 group-hover:bg-[#D2A63C] group-hover:shadow-[0_0_10px_rgba(210,166,60,0.8)] transition-all duration-300">
-                <Icon size={22} className="text-current" />
-            </div>
-            <span className="text-xs mt-1">{label}</span>
-        </Link>
-    );
-}

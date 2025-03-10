@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
+    const { auth } = usePage().props;
     const [isOpen, setIsOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
 
@@ -14,14 +15,6 @@ export default function Navbar() {
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
-
-    const handleScroll = (id) => {
-        const element = document.getElementById(id);
-        if (element) {
-            element.scrollIntoView({ behavior: "smooth" });
-            setIsOpen(false);
-        }
-    };
 
     return (
         <nav
@@ -44,21 +37,30 @@ export default function Navbar() {
                 {/* Desktop Menu */}
                 <div className="hidden md:flex gap-6">
                     {[
-                        { name: "Home", id: "home" },
-                        { name: "Tentang Klinik", id: "tentang" },
-                        { name: "Layanan", id: "layanan" },
-                        { name: "Berita", id: "berita" },
-                        { name: "Kontak", id: "kontak" },
+                        { name: "Home", href: "/" },
+                        { name: "Tentang Klinik", href: "/tentang" },
+                        { name: "Layanan", href: "/layanan" },
+                        { name: "Dokter", href: "/dokter" },
+                        { name: "Kontak", href: "/kontak" },
                     ].map((item, index) => (
-                        <button
+                        <Link
                             key={index}
-                            onClick={() => handleScroll(item.id)}
-                            className="relative group transition duration-300 text-white hover:text-gold"
+                            href={item.href}
+                            className="relative group transition duration-300 text-white hover:text-[#D2A63C]"
                         >
                             {item.name}
-                            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gold transition-all duration-300 group-hover:w-full"></span>
-                        </button>
+                            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#D2A63C] transition-all duration-300 group-hover:w-full"></span>
+                        </Link>
                     ))}
+
+                    {/* Tombol Login / Dashboard */}
+                    <Link
+                        href={auth.user ? "/dashboard" : "/login"}
+                        className="relative group transition duration-300 text-white hover:text-[#D2A63C]"
+                    >
+                        {auth.user ? "Dashboard" : "Login"}
+                        <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#D2A63C] transition-all duration-300 group-hover:w-full"></span>
+                    </Link>
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -88,21 +90,39 @@ export default function Navbar() {
                     isOpen ? "translate-x-0" : "-translate-x-full"
                 } flex flex-col items-center justify-center space-y-6 text-white text-xl`}
             >
+                {/* Tombol Tutup (X) */}
+                <button
+                    onClick={() => setIsOpen(false)}
+                    className="absolute top-5 right-6 text-3xl text-white hover:text-[#D2A63C] transition duration-300"
+                >
+                    &times;
+                </button>
+
                 {[
-                    { name: "Home", id: "home" },
-                    { name: "Tentang Klinik", id: "tentang" },
-                    { name: "Layanan", id: "layanan" },
-                    { name: "Berita", id: "berita" },
-                    { name: "Kontak", id: "kontak" },
+                    { name: "Home", href: "/" },
+                    { name: "Tentang Klinik", href: "/tentang" },
+                    { name: "Layanan", href: "/layanan" },
+                    { name: "Dokter", href: "/dokter" },
+                    { name: "Kontak", href: "/kontak" },
                 ].map((item, index) => (
-                    <button
+                    <Link
                         key={index}
-                        onClick={() => handleScroll(item.id)}
-                        className="py-2 px-6 hover:text-gold transition duration-300"
+                        href={item.href}
+                        onClick={() => setIsOpen(false)}
+                        className="py-2 px-6 hover:text-[#D2A63C] transition duration-300"
                     >
                         {item.name}
-                    </button>
+                    </Link>
                 ))}
+
+                {/* Tombol Login / Dashboard di Mobile */}
+                <Link
+                    href={auth.user ? "/dashboard" : "/login"}
+                    onClick={() => setIsOpen(false)}
+                    className="py-2 px-6 hover:text-[#D2A63C] transition duration-300"
+                >
+                    {auth.user ? "Dashboard" : "Login"}
+                </Link>
             </div>
         </nav>
     );

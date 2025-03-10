@@ -20,7 +20,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('Auth/Register');
+        return Inertia::render('Auth/AuthPage');
     }
 
     /**
@@ -29,23 +29,41 @@ class RegisteredUserController extends Controller
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+{
+    $request->validate([
+        'name' => ['required', 'regex:/^[a-zA-Z\s]+$/', 'max:255'],
+        'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
+        'password' => [
+            'required',
+            'confirmed',
+            Rules\Password::min(8)
+                ->mixedCase()
+                ->letters()
+                ->numbers()
+        ],
+    ], [
+        'name.required' => 'Nama wajib diisi.',
+        'name.regex' => 'Nama hanya boleh berisi huruf dan spasi.',
+        'email.required' => 'Email wajib diisi.',
+        'email.email' => 'Format email tidak valid.',
+        'email.unique' => 'Email sudah digunakan, coba email lain.',
+        'password.required' => 'Password wajib diisi.',
+        'password.confirmed' => 'Konfirmasi password tidak cocok.',
+        'password.min' => 'Password minimal 8 karakter.',
+        'password.mixedCase' => 'Password harus memiliki huruf besar dan kecil.',
+        'password.numbers' => 'Password harus mengandung angka.',
+    ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+    ]);
 
-        event(new Registered($user));
+    event(new Registered($user));
+    Auth::login($user);
 
-        Auth::login($user);
+    return redirect(route('dashboard', absolute: false));
+}
 
-        return redirect(route('dashboard', absolute: false));
-    }
 }

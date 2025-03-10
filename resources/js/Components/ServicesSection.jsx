@@ -46,9 +46,12 @@ const services = [
     },
 ];
 
-export default function DentalServices() {
+export default function ServicesSection() {
     return (
-        <section id="dental-services" className="relative w-full py-0 mb-0">
+        <section
+            id="dental-services"
+            className="relative w-full py-0 mb-24 z-10"
+        >
             {/* Swiper Slideshow */}
             <Swiper
                 modules={[Autoplay, Pagination, Navigation]}

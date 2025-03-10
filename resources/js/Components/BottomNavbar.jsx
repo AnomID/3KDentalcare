@@ -1,54 +1,36 @@
-import { useEffect, useState } from "react";
-import { Link } from "@inertiajs/react";
-import { Home, Users, CalendarClock, Activity, Star } from "lucide-react";
-import Navbar from "@/Components/Navbar";
+import { Link, usePage } from "@inertiajs/react";
+import {
+    Home,
+    Users,
+    LogIn,
+    Briefcase,
+    Star,
+    LayoutDashboard,
+} from "lucide-react";
 
-export default function AppLayout({ children }) {
-    const [isMobile, setIsMobile] = useState(false);
-
-    useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth <= 768);
-        };
-
-        handleResize();
-        window.addEventListener("resize", handleResize);
-
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
+export default function BottomNavbar() {
+    const { auth } = usePage().props;
 
     return (
-        <div className="min-h-screen flex flex-col bg-black text-white">
-            {/* Navbar */}
-            <Navbar />
-
-            {/* Konten Utama */}
-            <main className="flex-1">{children}</main>
-
-            {/* Bottom Navigation untuk Mobile */}
-            {isMobile && (
-                <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 w-[90%] bg-black/70 backdrop-blur-md border border-[#BB8525] shadow-lg shadow-[#BB8525]/50 rounded-2xl py-3 flex justify-around">
-                    <NavItem href="/" icon={Home} label="Home" />
-                    <NavItem href="/doctors" icon={Users} label="Doctors" />
-                    <NavItem
-                        href="/emergency"
-                        icon={CalendarClock}
-                        label="Emergency"
-                        activeColor="text-red-500"
-                    />
-                    <NavItem href="/statistics" icon={Activity} label="Stats" />
-                    <NavItem href="/testimonial" icon={Star} label="Reviews" />
-                </div>
-            )}
+        <div className="fixed bottom-0 left-0 w-full bg-black/70 backdrop-blur-md border-t border-[#BB8525] shadow-lg shadow-[#BB8525]/50 py-3 flex justify-around z-50">
+            <NavItem href="/" icon={Home} label="Home" />
+            <NavItem href="/doctors" icon={Users} label="Dokter" />
+            <NavItem
+                href={auth.user ? "/dashboard" : "/login"}
+                icon={auth.user ? LayoutDashboard : LogIn}
+                label={auth.user ? "Dashboard" : "Login"}
+            />
+            <NavItem href="/services" icon={Briefcase} label="Layanan" />
+            <NavItem href="/testimonial" icon={Star} label="Ulasan" />
         </div>
     );
 }
 
-function NavItem({ href, icon: Icon, label, activeColor = "text-[#D2A63C]" }) {
+function NavItem({ href, icon: Icon, label }) {
     return (
         <Link
             href={href}
-            className={`flex flex-col items-center text-[#F3F3E6] hover:${activeColor} transition duration-300`}
+            className="flex flex-col items-center text-[#F3F3E6] hover:text-[#D2A63C] transition duration-300"
         >
             <div className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition duration-300 shadow-md">
                 <Icon size={22} className="text-current" />

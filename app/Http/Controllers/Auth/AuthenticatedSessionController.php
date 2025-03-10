@@ -18,7 +18,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('Auth/Login', [
+        return Inertia::render('Auth/AuthPage', [
             'canResetPassword' => Route::has('password.request'),
             'status' => session('status'),
         ]);
@@ -27,14 +27,28 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
-    {
-        $request->authenticate();
+public function store(LoginRequest $request): RedirectResponse
+{
+    // Validasi input
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required|min:8',
+    ]);
 
-        $request->session()->regenerate();
+    $remember = $request->boolean('remember');
 
-        return redirect()->intended(route('dashboard', absolute: false));
+    // Coba autentikasi
+    if (!Auth::attempt($request->only('email', 'password'), $remember)) {
+        return back()->withErrors(['email' => 'Email atau password salah.']);
     }
+
+    // Regenerasi session setelah login sukses
+    $request->session()->regenerate();
+
+    return redirect()->intended(route('dashboard'));
+}
+
+
 
     /**
      * Destroy an authenticated session.
