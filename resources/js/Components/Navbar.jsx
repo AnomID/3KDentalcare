@@ -16,6 +16,46 @@ export default function Navbar() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    // Menentukan menu berdasarkan peran pengguna
+    let menuItems = [
+        { name: "Home", href: "/" },
+        { name: "Tentang Klinik", href: "/tentang" },
+        { name: "Layanan", href: "/layanan" },
+        { name: "Dokter", href: "/dokter" },
+        { name: "Kontak", href: "/kontak" },
+    ];
+
+    if (auth.user) {
+        switch (auth.user.role) {
+            case "patient":
+                menuItems = [
+                    { name: "Janji Temu", href: "/appointments" },
+                    { name: "Riwayat", href: "/history" },
+                    { name: "Tagihan", href: "/billing" },
+                    { name: "Dashboard", href: "/dashboard" },
+                ];
+                break;
+            case "doctor":
+                menuItems = [
+                    { name: "Dashboard", href: "/dashboard" },
+                    { name: "Pasien", href: "/patients" },
+                    { name: "Jadwal", href: "/schedule" },
+                    { name: "Rekam Medis", href: "/medical-records" },
+                ];
+                break;
+            case "employee":
+                menuItems = [
+                    { name: "Dashboard", href: "/dashboard" },
+                    {
+                        name: "Manajemen Janji Temu",
+                        href: "/manage-appointments",
+                    },
+                    { name: "Manajemen Tagihan", href: "/manage-billing" },
+                ];
+                break;
+        }
+    }
+
     return (
         <nav
             className={`fixed top-0 left-0 w-full px-6 py-4 z-50 transition-all duration-300 ${
@@ -36,13 +76,7 @@ export default function Navbar() {
 
                 {/* Desktop Menu */}
                 <div className="hidden md:flex gap-6">
-                    {[
-                        { name: "Home", href: "/" },
-                        { name: "Tentang Klinik", href: "/tentang" },
-                        { name: "Layanan", href: "/layanan" },
-                        { name: "Dokter", href: "/dokter" },
-                        { name: "Kontak", href: "/kontak" },
-                    ].map((item, index) => (
+                    {menuItems.map((item, index) => (
                         <Link
                             key={index}
                             href={item.href}
@@ -53,14 +87,26 @@ export default function Navbar() {
                         </Link>
                     ))}
 
-                    {/* Tombol Login / Dashboard */}
-                    <Link
-                        href={auth.user ? "/dashboard" : "/login"}
-                        className="relative group transition duration-300 text-white hover:text-[#D2A63C]"
-                    >
-                        {auth.user ? "Dashboard" : "Login"}
-                        <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#D2A63C] transition-all duration-300 group-hover:w-full"></span>
-                    </Link>
+                    {/* Tombol Login atau Logout */}
+                    {auth.user ? (
+                        <Link
+                            href="/logout"
+                            method="post"
+                            as="button"
+                            className="relative group transition duration-300 text-white hover:text-[#D2A63C]"
+                        >
+                            Logout
+                            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#D2A63C] transition-all duration-300 group-hover:w-full"></span>
+                        </Link>
+                    ) : (
+                        <Link
+                            href="/login"
+                            className="relative group transition duration-300 text-white hover:text-[#D2A63C]"
+                        >
+                            Login
+                            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#D2A63C] transition-all duration-300 group-hover:w-full"></span>
+                        </Link>
+                    )}
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -98,13 +144,7 @@ export default function Navbar() {
                     &times;
                 </button>
 
-                {[
-                    { name: "Home", href: "/" },
-                    { name: "Tentang Klinik", href: "/tentang" },
-                    { name: "Layanan", href: "/layanan" },
-                    { name: "Dokter", href: "/dokter" },
-                    { name: "Kontak", href: "/kontak" },
-                ].map((item, index) => (
+                {menuItems.map((item, index) => (
                     <Link
                         key={index}
                         href={item.href}
@@ -115,14 +155,26 @@ export default function Navbar() {
                     </Link>
                 ))}
 
-                {/* Tombol Login / Dashboard di Mobile */}
-                <Link
-                    href={auth.user ? "/dashboard" : "/login"}
-                    onClick={() => setIsOpen(false)}
-                    className="py-2 px-6 hover:text-[#D2A63C] transition duration-300"
-                >
-                    {auth.user ? "Dashboard" : "Login"}
-                </Link>
+                {/* Tombol Login atau Logout di Mobile */}
+                {auth.user ? (
+                    <Link
+                        href="/logout"
+                        method="post"
+                        as="button"
+                        onClick={() => setIsOpen(false)}
+                        className="py-2 px-6 hover:text-[#D2A63C] transition duration-300"
+                    >
+                        Logout
+                    </Link>
+                ) : (
+                    <Link
+                        href="/login"
+                        onClick={() => setIsOpen(false)}
+                        className="py-2 px-6 hover:text-[#D2A63C] transition duration-300"
+                    >
+                        Login
+                    </Link>
+                )}
             </div>
         </nav>
     );

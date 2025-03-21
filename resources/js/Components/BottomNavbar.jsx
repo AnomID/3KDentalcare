@@ -34,7 +34,7 @@ export default function BottomNavbar() {
             )}
 
             {/* Navbar untuk Pasien */}
-            {role === "pasien" && (
+            {role === "patient" && (
                 <>
                     <NavItem href="/dashboard" icon={Home} label="Dashbiard" />
                     <NavItem
@@ -52,7 +52,11 @@ export default function BottomNavbar() {
                         icon={CreditCard}
                         label="Tagihan"
                     />
-                    <NavItem href="/profile" icon={User} label="Profil" />
+                    <NavItem
+                        href={route("patient.profile")}
+                        icon={User}
+                        label="Profil"
+                    />
                 </>
             )}
         </div>

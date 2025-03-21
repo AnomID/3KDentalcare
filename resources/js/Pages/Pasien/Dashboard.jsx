@@ -5,7 +5,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, usePage } from "@inertiajs/react";
 import { Calendar, ClipboardList, FileText, Star } from "lucide-react";
 
-export default function PatientDashboard() {
+export default function Dashboard() {
     const { auth } = usePage().props;
 
     return (

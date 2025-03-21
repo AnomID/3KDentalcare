@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PatientController;
+use App\Http\Controllers\PatientProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,15 +29,18 @@ Route::middleware('auth')->group(function () {
 
 });
 
-Route::middleware(['auth', 'role:pasien'])->group(function () {
+Route::middleware(['auth', 'role:patient'])->group(function () {
     Route::get('/pasien-dashboard', [DashboardController::class, 'pasien'])->name('pasien.dashboard');
+    Route::get('/patient/profile', [PatientProfileController::class, 'show'])->name('patient.profile');
+    Route::resource('patient', PatientController::class);
+
 });
 
-Route::middleware(['auth', 'role:dokter'])->group(function () {
+Route::middleware(['auth', 'role:doctor'])->group(function () {
     Route::get('/dokter-dashboard', [DashboardController::class, 'dokter'])->name('dokter.dashboard');
 });
 
-Route::middleware(['auth', 'role:karyawan'])->group(function () {
+Route::middleware(['auth', 'role:employee'])->group(function () {
     Route::get('/karyawan-dashboard', [DashboardController::class, 'karyawan'])->name('karyawan.dashboard');
 });
 

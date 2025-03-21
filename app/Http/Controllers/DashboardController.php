@@ -17,15 +17,15 @@ class DashboardController extends Controller
         $user = Auth::user();
 
         return match ($user->role) {
-            'pasien' => Inertia::render('Pasien/Dashboard',
+            'patient' => Inertia::render('Pasien/Dashboard',
             ['title' => 'Dashboard Pasien','message' => 'Selamat datang di dashboard pasien!',
             ]),
-            'dokter' => Inertia::render('Dokter/Dashboard',
+            'doctor' => Inertia::render('Dokter/Dashboard',
             [
             'title' => 'Dashboard Dokter',
             'message' => 'Selamat datang di dashboard dokter!', 
             ]),
-            'karyawan' => Inertia::render('Karyawan/Dashboard',
+            'employee' => Inertia::render('Karyawan/Dashboard',
             [
             'title' => 'Dashboard Karyawan',
             'message' => 'Selamat datang di dashboard karyawan!',

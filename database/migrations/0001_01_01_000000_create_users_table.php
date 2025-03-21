@@ -17,9 +17,14 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('role');
+            $table->enum('role', ['patient', 'doctor', 'employee'])->default('patient');
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreignId('patient_id')->nullable()->constrained('patients')->onDelete('cascade');
+            $table->foreignId('doctor_id')->nullable()->constrained('doctors')->onDelete('cascade');
+            $table->foreignId('employee_id')->nullable()->constrained('employees')->onDelete('cascade');
+            
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
